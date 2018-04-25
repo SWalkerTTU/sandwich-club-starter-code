@@ -15,44 +15,39 @@ public class JsonUtils {
     public static Sandwich parseSandwichJson(String json) {
         JSONObject sandwichJson;
         JSONObject sandwichName;
-        String sandwichMainName;
-        JSONArray sandwichAKAArray;
+        String sandwichMainName = "";
+        JSONArray sandwichAKAArray = null;
         String sandwichOrigin;
         String sandwichDescription;
         String sandwichImage;
         JSONArray sandwichIngredientsArray;
         try {
             sandwichJson = new JSONObject(json);
-            sandwichName = sandwichJson.getJSONObject("name");
-            sandwichMainName = sandwichName.getString("mainName");
-            sandwichAKAArray = sandwichName.getJSONArray("alsoKnownAs");
-            sandwichOrigin = sandwichJson.optString("placeOfOrigin", "Unknown origin");
+            sandwichName = sandwichJson.optJSONObject("name");
+            if (sandwichName != null) {
+                sandwichMainName = sandwichName.optString("mainName");
+                sandwichAKAArray = sandwichName.optJSONArray("alsoKnownAs");
+            }
+            sandwichOrigin = sandwichJson.optString("placeOfOrigin");
             sandwichDescription = sandwichJson.optString("description");
-            sandwichImage = sandwichJson.getString("image");
-            sandwichIngredientsArray = sandwichJson.getJSONArray("ingredients");
+            sandwichImage = sandwichJson.optString("image");
+            sandwichIngredientsArray = sandwichJson.optJSONArray("ingredients");
         } catch (JSONException e) {
             Log.e(JsonUtils.class.getSimpleName(), "JSON parsing error");
             return null;
         }
 
         ArrayList<String> sandwichAKA = new ArrayList<>();
-        for (int i = 0; i < sandwichAKAArray.length(); i++) {
-            try {
-                sandwichAKA.add(sandwichAKAArray.getString(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
+        if (sandwichAKAArray != null) {
+            for (int i = 0; i < sandwichAKAArray.length(); i++) {
+                sandwichAKA.add(sandwichAKAArray.optString(i));
             }
-        }
-        if (sandwichAKA.size() == 0) {
-            sandwichAKA.add("No alternate names");
         }
 
         ArrayList<String> sandwichIngredients = new ArrayList<>();
-        for (int i = 0; i < sandwichIngredientsArray.length(); i++) {
-            try {
-                sandwichIngredients.add(sandwichIngredientsArray.getString(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
+        if (sandwichIngredientsArray != null) {
+            for (int i = 0; i < sandwichIngredientsArray.length(); i++) {
+                sandwichIngredients.add(sandwichIngredientsArray.optString(i));
             }
         }
 
