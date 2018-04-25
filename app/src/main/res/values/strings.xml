@@ -14,6 +14,7 @@
     <string name="detail_error_message">Sandwich data not available</string>
     <string name="no_origin_msg">Unknown origin</string>
     <string name="no_ingredients_msg">No ingredients (?)</string>
+    <string name="no_aka_msg">No other names</string>
 
     <string-array name="sandwich_names">
         <item>Ham and cheese sandwich</item>

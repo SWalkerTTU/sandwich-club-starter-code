@@ -45,7 +45,6 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-
         populateUI();
         Picasso.with(this)
                 .load(mSandwich.getImage())
@@ -60,6 +59,16 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI() {
+
+        if (mSandwich.getAlsoKnownAs().isEmpty()) {
+            mSandwich.getAlsoKnownAs().add(getString(R.string.no_aka_msg));
+        }
+        if ("".equals(mSandwich.getPlaceOfOrigin())) {
+            mSandwich.setPlaceOfOrigin(getString(R.string.no_origin_msg));
+        }
+        if (mSandwich.getIngredients().isEmpty()) {
+            mSandwich.getIngredients().add(getString(R.string.no_ingredients_msg));
+        }
 
         mBinding.alsoKnownTv.setText(TextUtils.join(", ", mSandwich.getAlsoKnownAs()));
         mBinding.descriptionTv.setText(mSandwich.getDescription());
