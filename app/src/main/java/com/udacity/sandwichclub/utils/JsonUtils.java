@@ -26,8 +26,8 @@ public class JsonUtils {
             sandwichName = sandwichJson.getJSONObject("name");
             sandwichMainName = sandwichName.getString("mainName");
             sandwichAKAArray = sandwichName.getJSONArray("alsoKnownAs");
-            sandwichOrigin = sandwichJson.getString("placeOfOrigin");
-            sandwichDescription = sandwichJson.getString("description");
+            sandwichOrigin = sandwichJson.optString("placeOfOrigin", "Unknown origin");
+            sandwichDescription = sandwichJson.optString("description");
             sandwichImage = sandwichJson.getString("image");
             sandwichIngredientsArray = sandwichJson.getJSONArray("ingredients");
         } catch (JSONException e) {
@@ -43,6 +43,9 @@ public class JsonUtils {
                 e.printStackTrace();
             }
         }
+        if (sandwichAKA.size() == 0) {
+            sandwichAKA.add("No alternate names");
+        }
 
         ArrayList<String> sandwichIngredients = new ArrayList<>();
         for (int i = 0; i < sandwichIngredientsArray.length(); i++) {
@@ -52,6 +55,7 @@ public class JsonUtils {
                 e.printStackTrace();
             }
         }
+
 
         return new Sandwich(
                 sandwichMainName,
